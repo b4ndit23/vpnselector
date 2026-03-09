@@ -2,6 +2,7 @@
 import curses
 import glob
 import os
+import signal
 import subprocess
 import sys
 
@@ -46,7 +47,30 @@ def choose_vpn(stdscr, vpn_files):
             return None
 
 
+def _restore_terminal():
+    try:
+        curses.nocbreak()
+        curses.echo()
+        curses.endwin()
+    except Exception:
+        pass
+
+
+def _install_signal_handlers():
+    def handler(signum, frame):
+        _restore_terminal()
+        sys.exit(1)
+
+    for sig in (signal.SIGINT, signal.SIGTERM):
+        try:
+            signal.signal(sig, handler)
+        except Exception:
+            # If we can't set a handler, just skip
+            pass
+
+
 def main():
+    _install_signal_handlers()
     # Change this to where your HTB VPN files live
     default_dir = os.environ.get("VPN_DIR", "~/Documents/CTF/HTB/VPNs")
     config_dir = sys.argv[1] if len(sys.argv) > 1 else default_dir
