@@ -1,6 +1,6 @@
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/J3J41UVIX7)
 
-## vpnSelector
+## vpnselect
 
 Small terminal TUI helper to quickly choose and start a Hack The Box (HTB) VPN configuration with `openvpn`.
 
